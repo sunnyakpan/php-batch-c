@@ -57,10 +57,10 @@
                 .then((response) => response.json())
                 .then((data) => {
                     if(data.status===200){
-                        alert(data.message);
-                        setTimeout(() => {
-                            window.location.href = data.nextPage;
-                        }, 2000);
+                        // alert(data.message);
+                        window.location.href = data.nextPage;
+                        // setTimeout(() => {
+                        // }, 2000);
                     }else{
                         alert(data.message);
                     }

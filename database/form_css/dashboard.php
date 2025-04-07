@@ -43,4 +43,36 @@ header .navbar ul{
     display: flex;
     gap: 20px;
 }
+header .navbar ul li a{
+    color: white;
+    font-size: 1.2rem;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+header .navbar ul li a:hover{
+    background-color: rgba(255, 255, 255, 0.2);
+}
+header .navbar ul li.active a{
+    background-color: rgba(255, 255, 255, 0.2);
+}
+header .navbar ul li.active a:hover{
+    background-color: rgba(255, 255, 255, 0.4);
+}
+header .navbar ul li:last-child a{
+    background-color: red;
+    color: white;
+}
+header .navbar ul li:last-child a:hover{
+    background-color: darkred;
+}
+
+.page_content{
+    width: 100%;
+    height: auto;
+    padding: 20px 70px;
+    background-color: var(--secondary-color);
+    margin: 30px auto;
+}
+
 </style>

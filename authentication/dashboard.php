@@ -28,8 +28,13 @@ $user = $_SESSION['user'];
                 <li><a href="http://localhost/tutorials/niit/ikorodu/batch-c/authentication/logout.php">Logout</a></li>
             </ul>
     </header>
-    <h1>
-        Welcome <?php echo $user['name'];?> to the Dashboard
-    </h1>
+    <div class="page_content">
+        <div class="page_content_wrapper">
+            <h1>Dashboard</h1>
+            <p>Welcome to the dashboard, <b> <?php echo $user['name']; ?>!</p> </b>
+            <p>Your email is: <b> <?php echo $user['email']; ?></p></b>
+        </div>
+    </div>
+    
 </body>
 </html>
