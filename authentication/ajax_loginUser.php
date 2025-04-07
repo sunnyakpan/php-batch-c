@@ -1,20 +1,15 @@
 <?php
-include "./connection_with_db.php";
+include "../database/connection_with_db.php";
 
 $responseMessage = '';
 $error = false;
+session_start();
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-
-    if (empty($name)) {
-        $responseMessage = 'Name is Required';
-        $error = true;
-    }
 
     if (empty($email)) {
         $responseMessage .= ', Email is Required';
@@ -30,36 +25,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = true;
     }
 
-    if ($error == false) {
+    if( $error == false) {
         $password = md5($password);
-        $sql = "
-        INSERT INTO users(name, email,password)
-        VALUES ('$name', '$email', '$password')";
-
+        $sql = "SELECT * FROM users WHERE email='$email'";
         $result = $conn->query($sql);
-        if ($result) {
-            $responseMessage = 'User Added Successfully';
-            $sql = "SELECT id, name, email FROM users ORDER BY id DESC;";
-
-            $result = $conn->query($sql);
-            if ($result->num_rows > 0) {
-                $result = $result->fetch_all(MYSQLI_ASSOC);
-               $response =  [
-                "status" => 200,
-                "message" => $responseMessage,
-                "data" => $result
-               ];
-            }else{
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            if($password != $user['password']){
+                $responseMessage = 'Invalid Password';
+                $error = true;
                 $response = [
                     "status"=>400,
-                    "message"=> "Users not found",
-                    "data"=>[]
+                    "message"=> $responseMessage,
+                    "data"=>[$password,md5($user['password'])]
                 ];
+            }else{
+                $responseMessage = 'You\'ve login Successfully';
+                $_SESSION['user'] = $user;
+                $response =  [
+                    "status" => 200,
+                    "message" => $responseMessage,
+                    "nextPage" => 'http://localhost/tutorials/niit/ikorodu/batch-c/authentication/dashboard.php',
+                ];
+
             }
         }else{
             $response = [
                 "status"=>400,
-                "message"=> "User not Added",
+                "message"=> "User not found",
                 "data"=>[]
             ];
         }
@@ -73,8 +66,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }else{
     $response = [
         "status"=>400,
-        "message"=> "Invalid Request Method",
+        "message"=> "Invalid Request",
         "data"=>[]
     ];
 }
 echo json_encode($response);
+?>
